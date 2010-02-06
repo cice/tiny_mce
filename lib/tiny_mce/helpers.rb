@@ -17,9 +17,11 @@ module TinyMCE
 
       @tiny_mce_configurations.each do |configuration|
         configuration.add_options :options=>options,:raw_options=>raw_options
-        tinymce_js += "tinyMCE.init("
+        configuration.add_options :options=>{:script_url => javascript_path("tiny_mce/tiny_mce")}
+        tinymce_js += "jQuery().ready(function(){ \n"
+        tinymce_js += "\t jQuery('textarea.#{configuration.selector}').tinymce(\n"
         tinymce_js += configuration.to_json
-        tinymce_js += ");"
+        tinymce_js += ");\n});"
       end
 
       tinymce_js
@@ -37,7 +39,7 @@ module TinyMCE
 
     # Form a JS include tag for the TinyMCE JS src for inclusion in the <head>
     def include_tiny_mce_js
-      javascript_include_tag (RAILS_ENV == 'development' ? "tiny_mce/tiny_mce_src" : "tiny_mce/tiny_mce")
+      javascript_include_tag "tiny_mce/jquery.tinymce.js"
     end
     # Form a JS include tag for the TinyMCE JS src for inclusion in the <head>
     # (only if tiny mce is actually being used)

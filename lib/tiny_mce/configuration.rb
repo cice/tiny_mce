@@ -5,16 +5,16 @@ module TinyMCE
     # Also loads which options are valid, and provides an plugins attribute to allow 
     # more configuration options dynamicly
 
-    attr_accessor :options,:raw_options,:plugins
+    attr_accessor :options,:raw_options,:plugins,:selector
 
-    DEFAULT_OPTIONS = { 'mode' => 'textareas',
-                  'editor_selector' => 'mceEditor',
+    DEFAULT_OPTIONS = { 
                   'theme' => 'simple',
                   'language' => (defined?(I18n) ? I18n.locale : :en) }
 
     def initialize combined_options={}
       @options = combined_options[:options] || {}
       @options.stringify_keys!
+      @selector = combined_options[:selector]
       @raw_options = [combined_options[:raw_options]]
       @plugins = Array.new
     end
@@ -45,6 +45,7 @@ module TinyMCE
     def plugins_include? plugin
       @options.stringify_keys["plugins"].include? plugin
     end
+    
 
     # Validate and merge options and raw_options into a string
     # to be used for tinyMCE.init() in the raw_tiny_mce_init helper
@@ -78,6 +79,8 @@ module TinyMCE
       json_options.sort!
 
       @raw_options.compact!
+      @raw_options.reject!{|raw_option| raw_option.blank?}
+      
       json_options += @raw_options unless @raw_options.blank?
       json_options << raw_options unless raw_options.blank?
 

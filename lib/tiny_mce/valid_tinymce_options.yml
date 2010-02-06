@@ -87,6 +87,7 @@
 - relative_urls
 - remove_script_host
 - document_base_url
+- script_url
 
 # Layout
 - body_id

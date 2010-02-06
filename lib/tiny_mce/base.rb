@@ -15,7 +15,7 @@ module TinyMCE
         tiny_mce_options = options.delete(:options) || {}
         raw_tiny_mce_options = options.delete(:raw_options) || ''
         
-        configuration = TinyMCE::Configuration.new :options=>tiny_mce_options,:raw_options=>raw_tiny_mce_options
+        configuration = TinyMCE::Configuration.new :options=>tiny_mce_options,:raw_options=>raw_tiny_mce_options,:selector=>options[:selector]
 
         # Allow users to have default options in config/tiny_mce.yml so that
         # they do not need to specify the same options over all controllers
